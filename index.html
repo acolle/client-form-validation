@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Validation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" />
+  <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-1/js/all.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <section class="hero is-fullheight has-background-light">
+    <div class="hero-head has-background-info	">
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <div class="navbar-item">
+              <h1 class="has-text-white has-text-weight-bold">Validating Forms on the Client side</h1>
+            </div>
+            <span class="navbar-burger burger" data-target="navbarMenu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </div>
+          <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-end">
+              <span class="navbar-item">
+                <a class="button is-grey is-outlined" href="https://github.com/acolle/form-validation-vanilla-js">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>View Source</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="hero-body">
+      <div class="container">
+        <div class="column is-4 is-offset-4 box">
+
+          <div class="has-text-centered">
+            <p>Which form validation method would you like to use?</p>
+            <div class="field is-grouped is-grouped-centered">
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" value="html" name="method" onclick="displayForm(this)" checked>
+                  HTML5
+                </label>
+                <label class="radio">
+                  <input type="radio" value="javascript" name="method" onclick="displayForm(this)">
+                  JavaScript
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Built-in HTML5 Form Validation -->
+          <form id="form-html" onsubmit="submitFormHtml()">
+
+            <div class="field">
+              <label class="label">Full Name</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" name="name" placeholder="Enter your name.." required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Username</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" name="username" placeholder="Enter your username.." required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user-secret"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control has-icons-left">
+                <input class="input" type="email" name="email" placeholder="Enter your email.." required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Subject</label>
+              <div class="control">
+                <div class="select">
+                  <select name="subject" required>
+                    <option disabled selected></option>
+                    <option>Sales inquiries</option>
+                    <option>Request a demonstration</option>
+                    <option>Technical support</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Message</label>
+              <div class="control">
+                <textarea class="textarea" name="message" placeholder="Type your message here.." required></textarea>
+              </div>
+            </div>
+
+            <div class="field">
+              <p>Would you like to share analytics to help us improve our services?</p>
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" name="analytics" required>
+                  Yes
+                </label>
+                <label class="radio">
+                  <input type="radio" name="analytics" required>
+                  No
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox" name="terms" required>
+                  I agree to the <a href="#">terms and conditions</a>
+                </label>
+              </div>
+            </div>
+
+            <div class="buttons is-centered">
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link">Submit</button>
+                </div>
+                <div class="control">
+                  <button class="button is-link is-light" type="button" onclick="clearForm()">Clear</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- JavaScript Form Validation -->
+          <form id="form-js" class="is-hidden" novalidate>
+            <div class="field">
+              <label class="label">Full Name</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="text" name="name" placeholder="Enter your name.." required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+                <span class="icon is-small is-right is-hidden">
+                  <i class="fas fa-check"></i>
+                </span>
+              </div>
+              <p id="name-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <label class="label">Username</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="text" name="username" placeholder="Enter your username.." required minlength="4">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user-secret"></i>
+                </span>
+                <span class="icon is-small is-right is-hidden">
+                  <i class="fas fa-check"></i>
+                </span>
+              </div>
+              <p id="username-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="email" name="email" placeholder="Enter your email.." required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right is-hidden">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </span>
+              </div>
+              <p id="email-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <label class="label">Subject</label>
+              <div class="control">
+                <div class="select">
+                  <select name="subject" required>
+                    <option disabled selected></option>
+                    <option>Sales inquiries</option>
+                    <option>Request a demonstration</option>
+                    <option>Technical support</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <p id="subject-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <label class="label">Message</label>
+              <div class="control">
+                <textarea class="textarea" name="message" placeholder="Type your message here.." required></textarea>
+              </div>
+              <p id="message-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <p>Would you like to share analytics to help us improve our services?</p>
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" name="analytics" required>
+                  Yes
+                </label>
+                <label class="radio">
+                  <input type="radio" name="analytics" required>
+                  No
+                </label>
+              </div>
+              <p id="analytics-error" class="help is-danger is-hidden"></p>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox" name="terms" required>
+                  I agree to the <a href="#">terms and conditions</a>
+                </label>
+              </div>
+              <p id="terms-error" class="help is-danger is-hidden">Terms and conditions have to be agreed upon</p>
+            </div>
+
+            <div class="buttons is-centered">
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link">Submit</button>
+                </div>
+                <div class="control">
+                  <button class="button is-link is-light" type="button" onclick="clearForm()">Clear</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div id="modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+              <div class="box has-text-centered">
+                <i class="far fa-thumbs-up is-size-2"></i>
+                <br><br>
+                <p class="is-size-6">All inputs have been validated and the form has been successfully submitted!</p>
+              </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" onclick="toggleModal()"></button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="./script.js" charset="utf-8"></script>
+</body>
+</html>
